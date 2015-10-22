@@ -32,12 +32,4 @@ public class MyCParser extends CParser {
         return error;
     }
 
-
-//    private CommonTreeAdaptor createAdaptor() {
-//        return new CommonTreeAdaptor() {
-//            public Object create(Token token) {
-//                return NodeFactory.create(token);
-//            }
-//        };
-//    }
 }

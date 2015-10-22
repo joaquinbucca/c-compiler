@@ -1,4 +1,6 @@
 import org.antlr.v4.runtime.RecognitionException;
+import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,6 +11,7 @@ import java.io.StringReader;
  *
  */
 public class Compiler {
+    public  MyCParser parser = null;
     public static void main(String[] args)
         throws IOException, RecognitionException
     {
@@ -24,7 +27,7 @@ public class Compiler {
         for (final String arg : args) {
             final FileReader file = new FileReader(arg);
             try {
-                final Node ast = compiler.parse(file, true);
+                final ParseTree ast = compiler.parse(file, true);
                 System.out.println("TREE:\n" + ast + "\n");
             }
             finally {
@@ -33,22 +36,27 @@ public class Compiler {
         }
     }
 
-    protected Node parse(String code, boolean abortOnError)
+    protected ParseTree parse(String code, boolean abortOnError)
         throws IOException, RecognitionException
     {
         return parse(new StringReader(code), abortOnError);
     }
 
-    protected Node parse(Reader reader, boolean abortOnError)
+    public CParser getParser() { return parser;}
+
+    protected ParseTree parse(Reader reader, boolean abortOnError)
         throws IOException, RecognitionException
     {
-        final MyCParser parser = new MyCParser(reader);
-        final CParser.UnaryExpressionContext program = parser.unaryExpression();
+        parser = new MyCParser(reader);
+        final ParseTreeWalker walker = new ParseTreeWalker();
+        final CBaseListener listener = new CBaseListener();
+        final CParser.CompilationUnitContext program = parser.compilationUnit();
+        walker.walk(listener, program);
 
         if (abortOnError && parser.getError() != null) {
             throw parser.getError();
         }
 
-        return (Node) program.getRuleContext();
+        return program.getChild(0);
     }
 }
