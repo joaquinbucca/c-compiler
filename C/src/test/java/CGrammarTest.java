@@ -14,6 +14,10 @@ public class CGrammarTest {
         final Compiler compiler = new Compiler();
         final ParseTree ast = compiler.parse("/* Airport simulation */\n" +
                 "\n" +
+                "#include caca.h;" +
+                "\n" +
+                "#define MAX;" +
+                "\n" +
                 "typedef struct\n" +
                 "{\n" +
                 "\tint id ;\n" +

@@ -165,7 +165,14 @@ declarationSpecifier
     |   typeQualifier
     |   functionSpecifier
     |   alignmentSpecifier
+    |   includeSpecifier
+    |   defineSpecifier
     ;
+
+includeSpecifier : '#include' includeFile;
+includeFile : Identifier '.' Identifier;
+defineSpecifier : '#define';
+
 
 initDeclaratorList
     :   initDeclarator
@@ -530,6 +537,8 @@ Unsigned : 'unsigned';
 Void : 'void';
 Volatile : 'volatile';
 While : 'while';
+Define : '#define';
+Include : '#include';
 
 Alignas : '_Alignas';
 Alignof : '_Alignof';
