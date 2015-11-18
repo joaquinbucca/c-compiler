@@ -27,9 +27,8 @@ public class TreePrinterListener implements ParseTreeListener {
         if (builder.length() > 0) {
             builder.append(' ');
         }
-        builder.append("{ \"name\" : \"").append(node.getSymbol().getText()).append("\"");
-        builder.append(", \"children\" : []}, ");
-//        builder.append(Utils.escapeWhitespace(Trees.getNodeText(node, ruleNames), false));
+        builder.append("{ \"text\" : \"").append(node.getSymbol().getText()).append("\"");
+        builder.append("}, ");
     }
 
     @Override
@@ -37,9 +36,8 @@ public class TreePrinterListener implements ParseTreeListener {
         if (builder.length() > 0) {
             builder.append(' ');
         }
-        builder.append("{ \"name\" : \"").append(node.getSymbol().getText()).append("\"");
-        builder.append(", \"children\" : []}, ");
-//        builder.append(Utils.escapeWhitespace(Trees.getNodeText(node, ruleNames), false));
+        builder.append("{ \"text\" : \"").append(node.getSymbol().getText()).append("\"");
+        builder.append("}, ");
     }
 
     @Override
@@ -49,19 +47,17 @@ public class TreePrinterListener implements ParseTreeListener {
         }
 
 
-//        final boolean isLeaf = ctx.getChildCount() <= 0;
 
         final int ruleIndex = ctx.getRuleIndex();
         final String ruleName;
         if (ruleIndex >= 0 && ruleIndex < ruleNames.size()) {
             ruleName = ruleNames.get(ruleIndex);
-//            if (isLeaf) ruleName += "( "+ctx.getPayload().getText()+" )";
         }
         else {
             ruleName = Integer.toString(ruleIndex);
         }
-        builder.append("{ \"name\" : \"").append(ruleName).append("\"");
-        builder.append(", \"children\" : [");
+        builder.append("{ \"text\" : \"").append(ruleName).append("\"");
+        builder.append(", \"nodes\" : [");
     }
 
     @Override
