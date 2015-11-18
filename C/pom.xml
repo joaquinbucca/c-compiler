@@ -4,6 +4,14 @@
     <artifactId>C</artifactId>
     <packaging>jar</packaging>
     <name>C</name>
+    <dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <parent>
         <groupId>com.antlr.grammarsv4</groupId>
         <artifactId>grammarsv4</artifactId>

@@ -27,7 +27,7 @@ public class TreePrinterListener implements ParseTreeListener {
         if (builder.length() > 0) {
             builder.append(' ');
         }
-        builder.append("{ \"text\" : \"").append(node.getSymbol().getText()).append("\"");
+        builder.append("{ \"text\" : \"").append(appendText(node.getSymbol().getText())).append("\"");
         builder.append("}, ");
     }
 
@@ -36,8 +36,12 @@ public class TreePrinterListener implements ParseTreeListener {
         if (builder.length() > 0) {
             builder.append(' ');
         }
-        builder.append("{ \"text\" : \"").append(node.getSymbol().getText()).append("\"");
+        builder.append("{ \"text\" : \"").append(appendText(node.getSymbol().getText())).append("\"");
         builder.append("}, ");
+    }
+
+    private String appendText(String text) {
+        return text.replaceAll("\"", "");
     }
 
     @Override
@@ -57,7 +61,7 @@ public class TreePrinterListener implements ParseTreeListener {
             ruleName = Integer.toString(ruleIndex);
         }
         builder.append("{ \"text\" : \"").append(ruleName).append("\"");
-        builder.append(", \"nodes\" : [");
+        if (ctx.getChildCount() != 0) builder.append(", \"nodes\" : [");
     }
 
     @Override
@@ -65,12 +69,15 @@ public class TreePrinterListener implements ParseTreeListener {
         final int i = builder.lastIndexOf(", ");
         final int length = builder.length();
         if (i == length - 2) builder.replace(i, length, "");
-        builder.append("]}, ");
+        if (ctx.getChildCount() == 0) builder.append("}, ");
+        else builder.append("]}, ");
     }
 
     @Override
     public String toString() {
-        return builder.toString();
+        final String response = builder.toString();
+//        return "{\"text\": \"One\", \"nodes\": [{\"text\": \"Two\"}, {\"text\": \"Threeeeee\"}, {\"text\": \"Four\"}]}";
+        return response.substring(0, response.length()-2);
     }
 
 }

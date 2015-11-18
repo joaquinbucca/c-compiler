@@ -170,7 +170,7 @@ declarationSpecifier
     ;
 
 includeSpecifier : '#include' includeFile;
-includeFile : Identifier '.' Identifier;
+includeFile : '<' Identifier '.' Identifier '>';
 defineSpecifier : '#define';
 
 
