@@ -1,6 +1,9 @@
+import com.strategicgains.restexpress.plugin.cors.CorsHeaderPlugin;
 import org.antlr.v4.runtime.RecognitionException;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.restexpress.Flags;
+import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import org.restexpress.RestExpress;
 import org.restexpress.serialization.DefaultSerializationProvider;
 import org.restexpress.serialization.SerializationProvider;
@@ -36,6 +39,11 @@ public class Compiler {
 
         Routes.define(configuration, server);
         Relationships.define(server);
+        new CorsHeaderPlugin("*")
+                .flag(Flags.Auth.PUBLIC_ROUTE)
+                .allowHeaders(CONTENT_TYPE, ACCEPT, AUTHORIZATION, REFERER, LOCATION)
+                .exposeHeaders(LOCATION)
+                .register(server);
         server.bind(configuration.getPort());
         server.awaitShutdown();
 //        // Process each file

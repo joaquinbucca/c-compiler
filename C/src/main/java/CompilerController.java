@@ -1,5 +1,6 @@
 import com.strategicgains.hyperexpress.HyperExpress;
 import com.strategicgains.hyperexpress.builder.TokenResolver;
+import com.strategicgains.hyperexpress.builder.UrlBuilder;
 import com.strategicgains.syntaxe.ValidationEngine;
 import io.netty.handler.codec.http.HttpMethod;
 import org.antlr.v4.runtime.tree.ParseTree;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class CompilerController {
 
     private final Compiler compiler;
+    private static final UrlBuilder LOCATION_BUILDER = new UrlBuilder();
 
     public CompilerController() {
         compiler= new Compiler();
@@ -27,6 +29,10 @@ public class CompilerController {
             final TreePrinterListener treePrinterListener = new TreePrinterListener(compiler.getParser());
             ParseTreeWalker.DEFAULT.walk(treePrinterListener, ast);
             final String treeJson = treePrinterListener.toString();
+
+            final TokenResolver resolver = HyperExpress.bind("parseId", UUID.fromString(treeJson).toString());
+            final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.PARSE_ROUTE);
+            response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
 
             // Construct the response for create...
             response.setResponseCreated();
