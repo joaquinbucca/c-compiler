@@ -5,7 +5,9 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by joaquin on 10/11/15.
@@ -13,6 +15,7 @@ import java.util.List;
 public class TreePrinterListener implements ParseTreeListener {
     private final List<String> ruleNames;
     private final StringBuilder builder = new StringBuilder();
+    private static Map<String, Integer> occurrences= new HashMap<String, Integer>();
 
     public TreePrinterListener(Parser parser) {
         ruleNames = Arrays.asList(parser.getRuleNames());
@@ -22,12 +25,23 @@ public class TreePrinterListener implements ParseTreeListener {
         this.ruleNames = ruleNames;
     }
 
+    public static void resetOccurrencesMap(){
+        occurrences= new HashMap<String, Integer>();
+    }
+
+    public static Integer getOccurrence(String leaf){
+        return occurrences.containsKey(leaf) ? occurrences.get(leaf) : 0;
+    }
+
     @Override
     public void visitTerminal(TerminalNode node) {
         if (builder.length() > 0) {
             builder.append(' ');
         }
-        builder.append("{ \"text\" : \"").append(appendText(node.getSymbol().getText())).append("\"");
+        final String text = node.getSymbol().getText();
+        if (occurrences.containsKey(text)) occurrences.put(text, occurrences.get(text) +1);
+        else occurrences.put(text, 1);
+        builder.append("{ \"text\" : \"").append(appendText(text)).append("\"");
         builder.append("}, ");
     }
 
@@ -77,7 +91,7 @@ public class TreePrinterListener implements ParseTreeListener {
     public String toString() {
         final String response = builder.toString();
 //        return "{\"text\": \"One\", \"nodes\": [{\"text\": \"Two\"}, {\"text\": \"Threeeeee\"}, {\"text\": \"Four\"}]}";
-        return response.substring(0, response.length()-2);
+        return response.substring(0, response.length() - 2);
     }
 
 }

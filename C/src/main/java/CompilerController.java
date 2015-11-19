@@ -22,6 +22,7 @@ public class CompilerController {
             final CFile cFile = request.getBodyAs(CFile.class, "C file not provided");
             ValidationEngine.validateAndThrow(cFile);
             final ParseTree ast = compiler.parse(cFile.getContent(), false);
+            TreePrinterListener.resetOccurrencesMap();
             final TreePrinterListener treePrinterListener = new TreePrinterListener(compiler.getParser());
             ParseTreeWalker.DEFAULT.walk(treePrinterListener, ast);
             final String treeJson = treePrinterListener.toString();
@@ -37,6 +38,12 @@ public class CompilerController {
         } catch (final IOException e) {
             return e.getMessage();
         }
+    }
+
+    public String read(Request request, Response response) {
+        final String leaf = request.getHeader("leaf");
+        final Integer occurrence = TreePrinterListener.getOccurrence(leaf);
+        return "{\"name\" : \""+leaf+"\" , \"occurrences\" : "+occurrence+"}";
     }
 
     private static class CFile {

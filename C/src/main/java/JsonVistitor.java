@@ -6,7 +6,7 @@ import org.antlr.v4.runtime.tree.*;
  */
 public class JsonVistitor {
 
-    private CParser parser;
+    private final CParser parser;
 
     public JsonVistitor(CParser parser) {
         this.parser = parser;
@@ -14,7 +14,7 @@ public class JsonVistitor {
 
     public String visit(ParseTree parseTree) {
         if (parseTree instanceof ErrorNode) return visitError((ErrorNode) parseTree);
-        else if (parseTree instanceof TerminalNode) return visitTerminal((TerminalNode) parseTree);
+        if (parseTree instanceof TerminalNode) return visitTerminal((TerminalNode) parseTree);
         return visitRule((RuleNode) parseTree);
     }
 
@@ -30,7 +30,7 @@ public class JsonVistitor {
     }
 
     private String visitRule(RuleNode parseTree) {
-        StringBuilder json = new StringBuilder();
+        final StringBuilder json = new StringBuilder();
         final RuleContext ctx = parseTree.getRuleContext();
         if (ctx instanceof CParser.TranslationUnitContext) {
             for (int i = 0; i < parseTree.getChildCount(); i++) {
@@ -42,7 +42,7 @@ public class JsonVistitor {
     }
 
     private String printRule(RuleNode parseTree) {
-        StringBuilder json = new StringBuilder().append("{ \"text\" : \"").append(parseTree.getText());
+        final StringBuilder json = new StringBuilder().append("{ \"text\" : \"").append(parseTree.getText());
         final int childCount = parseTree.getChildCount();
         if (childCount > 0) {
             json.append("\", \"nodes\" : [");

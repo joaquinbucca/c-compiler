@@ -11,6 +11,10 @@ public class Routes {
 //                .action("parse", HttpMethod.GET)
                 .method(HttpMethod.POST)
                 .name(Constants.PARSE_ROUTE);
+        server.uri("/occurrence/{leaf}", config.getCompilerController())
+//                .action("occurrence", HttpMethod.GET)
+                .method(HttpMethod.GET)
+                .name(Constants.OCCURRENCE_ROUTE);
 //
 //        server.uri("/blogs/{blogId}.{format}", config.getBlogController())
 //                .method(HttpMethod.GET, HttpMethod.PUT, HttpMethod.DELETE)

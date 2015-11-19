@@ -15,7 +15,8 @@ public class Relationships {
 
                 HyperExpress.relationships()
                         .forCollectionOf(Compiler.class)
-                        .rel(RelTypes.SELF, routes.get(Constants.PARSE_ROUTE));
+                        .rel(RelTypes.SELF, routes.get(Constants.PARSE_ROUTE))
+                        .rel(RelTypes.SELF, routes.get(Constants.OCCURRENCE_ROUTE));
 
 
         }
