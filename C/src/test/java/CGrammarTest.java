@@ -1,10 +1,9 @@
-import junit.framework.Assert;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 public class CGrammarTest {
 
@@ -12,8 +11,7 @@ public class CGrammarTest {
     @Test
     public void testSimpleC() throws IOException {
         final Compiler compiler = new Compiler();
-        final ParseTree ast = compiler.parse("/* Airport simulation */\n" +
-                "\n" +
+        String code =
                 "#include caca.h;" +
                 "\n" +
                 "#define MAX;" +
@@ -23,16 +21,26 @@ public class CGrammarTest {
                 "\tint id ;\n" +
                 "\tint tm ;\n" +
                 "} plane;\n" +
-                "\n", false);
+                "\n";
+        final ParseTree ast = compiler.parse(code, false);
 
-//            final JsonVistitor jsonVistitor = new JsonVistitor();
-//            final String visit = jsonVistitor.visit(ast);
-//            System.out.println(visit);
+        Assert.assertNotNull(ast);
+
         final TreePrinterListener treePrinterListener = new TreePrinterListener(compiler.getParser());
         ParseTreeWalker.DEFAULT.walk(treePrinterListener, ast);
         final String formatted = treePrinterListener.toString();
         System.out.println(formatted);
-//        System.out.println(ast);
-        Assert.assertNotNull(ast);
+
+
+        final String reconstructedFileWithoutSpaces= treePrinterListener.getLeafsAsText();
+        code = getStringWithoutSpaces(code);
+        Assert.assertArrayEquals(reconstructedFileWithoutSpaces.getBytes(), code.getBytes());
+    }
+
+    private String getStringWithoutSpaces(String code) {
+        String code1 = code.replaceAll("\\s+", "");
+        code1 = code1.replaceAll("\n", "");
+        code1 = code1.replaceAll("\t", "");
+        return code1;
     }
 }

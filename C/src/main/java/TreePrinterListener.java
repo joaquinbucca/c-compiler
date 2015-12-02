@@ -4,10 +4,7 @@ import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by joaquin on 10/11/15.
@@ -16,13 +13,19 @@ public class TreePrinterListener implements ParseTreeListener {
     private final List<String> ruleNames;
     private final StringBuilder builder = new StringBuilder();
     private static Map<String, Integer> occurrences= new HashMap<String, Integer>();
+    private  List<String> leafs;
 
     public TreePrinterListener(Parser parser) {
-        ruleNames = Arrays.asList(parser.getRuleNames());
+        ruleNames = init(Arrays.asList(parser.getRuleNames()));
+    }
+
+    private List<String> init(List<String> rules) {
+        leafs= new ArrayList<String>();
+        return rules;
     }
 
     public TreePrinterListener(List<String> ruleNames) {
-        this.ruleNames = ruleNames;
+        this.ruleNames = init(ruleNames);
     }
 
     public static void resetOccurrencesMap(){
@@ -33,6 +36,14 @@ public class TreePrinterListener implements ParseTreeListener {
         return occurrences.containsKey(leaf) ? occurrences.get(leaf) : 0;
     }
 
+    public String getLeafsAsText(){
+        final StringBuilder leafsBuilder= new StringBuilder();
+        for (final String leaf : leafs) {
+            leafsBuilder.append(leaf);
+        }
+        return leafsBuilder.toString();
+    }
+
     @Override
     public void visitTerminal(TerminalNode node) {
         if (builder.length() > 0) {
@@ -41,6 +52,7 @@ public class TreePrinterListener implements ParseTreeListener {
         final String text = node.getSymbol().getText();
         if (occurrences.containsKey(text)) occurrences.put(text, occurrences.get(text) +1);
         else occurrences.put(text, 1);
+        leafs.add(text);
         builder.append("{ \"text\" : \"").append(appendText(text)).append("\"");
         builder.append("}, ");
     }
