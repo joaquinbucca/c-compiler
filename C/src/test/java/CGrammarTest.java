@@ -12,7 +12,7 @@ public class CGrammarTest {
     public void testSimpleC() throws IOException {
         final Compiler compiler = new Compiler();
         String code =
-                "#include caca.h;" +
+                "#include airport.h;" +
                 "\n" +
                 "#define MAX;" +
                 "\n" +
