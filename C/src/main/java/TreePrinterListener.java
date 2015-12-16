@@ -6,9 +6,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
 
-/**
- * Created by joaquin on 10/11/15.
- */
+
 public class TreePrinterListener implements ParseTreeListener {
     private final List<String> ruleNames;
     private final StringBuilder builder = new StringBuilder();

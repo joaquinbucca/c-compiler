@@ -14,23 +14,16 @@ import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
 
-/**
- *
- */
+
 public class Compiler {
     public  MyCParser parser = null;
-    private static final String SERVICE_NAME = "Blogging Example";
+
+    private static final String SERVICE_NAME = "Tesis";
+
+
     public static void main(String[] args)
         throws IOException, RecognitionException
     {
-        final Compiler compiler = new Compiler();
-
-        // Validate arguments
-//        if (args.length == 0) {
-//            System.out.println("Please, specify some files to compile...");
-//            System.exit(1);
-//        }
-
         RestExpress.setDefaultSerializationProvider(new DefaultSerializationProvider());
         final Configuration configuration= Environment.load(args, Configuration.class);
         final RestExpress server = new RestExpress()
@@ -46,17 +39,6 @@ public class Compiler {
                 .register(server);
         server.bind(configuration.getPort());
         server.awaitShutdown();
-//        // Process each file
-//        for (final String arg : args) {
-//            final FileReader file = new FileReader(arg);
-//            try {
-//                final ParseTree ast = compiler.parse(file, true);
-//                System.out.println("TREE:\n" + ast + "\n");
-//            }
-//            finally {
-//                file.close();
-//            }
-//        }
     }
 
     protected ParseTree parse(String code, boolean abortOnError)

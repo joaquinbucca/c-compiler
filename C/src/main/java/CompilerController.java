@@ -27,9 +27,6 @@ public class CompilerController {
             ParseTreeWalker.DEFAULT.walk(treePrinterListener, ast);
             final String treeJson = treePrinterListener.toString();
 
-//            final TokenResolver resolver = HyperExpress.bind("parseId", UUID.fromString(treeJson).toString());
-//            final String locationPattern = request.getNamedUrl(HttpMethod.GET, Constants.PARSE_ROUTE);
-//            response.addLocationHeader(LOCATION_BUILDER.build(locationPattern, resolver));
 
             // Construct the response for create...
             response.setResponseCreated();

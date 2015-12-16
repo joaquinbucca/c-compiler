@@ -179,10 +179,7 @@ initDeclaratorList
     |   initDeclaratorList ',' initDeclarator
     ;
 
-initDeclarator
-    :   declarator
-    |   declarator '=' initializer
-    ;
+initDeclarator :   declarator | declarator '=' initializer ;
 
 storageClassSpecifier
     :   'typedef'
